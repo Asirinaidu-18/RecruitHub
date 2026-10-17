@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | RecruitConnect</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-slate-100 text-slate-800">
+
+    <main class="min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+        <div class="w-full max-w-5xl bg-white rounded-3xl shadow-xl
+                    overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+
+            <!-- Left Information Panel -->
+            <section class="hidden lg:flex flex-col justify-between
+                            bg-gradient-to-br from-indigo-700 via-indigo-600
+                            to-violet-700 p-12 text-white">
+
+                <div>
+                    <div class="flex items-center gap-3">
+                        <div class="h-11 w-11 rounded-xl bg-white/15
+                                    flex items-center justify-center
+                                    text-xl font-bold">
+                            R
+                        </div>
+
+                        <span class="text-xl font-bold">RecruitConnect</span>
+                    </div>
+
+                    <div class="mt-24">
+                        <p class="text-sm font-semibold uppercase
+                                  tracking-widest text-indigo-200">
+                            Welcome Back
+                        </p>
+
+                        <h1 class="text-4xl xl:text-5xl font-bold
+                                   leading-tight mt-4">
+                            Your next
+                            <br>
+                            opportunity
+                            <br>
+                            awaits.
+                        </h1>
+
+                        <p class="mt-6 leading-relaxed text-indigo-100
+                                  max-w-md">
+                            Sign in to explore job opportunities, manage
+                            your profile, and track your applications.
+                        </p>
+                    </div>
+                </div>
+
+                <p class="text-sm text-indigo-200">
+                    Recruitment Management System
+                </p>
+            </section>
+
+            <!-- Login Form -->
+            <section class="p-6 sm:p-10 lg:p-14 flex items-center">
+
+                <div class="w-full max-w-md mx-auto">
+
+                    <!-- Mobile Heading -->
+                    <div class="lg:hidden mb-8">
+                        <p class="font-bold text-indigo-600">
+                            RECRUITCONNECT
+                        </p>
+
+                        <h1 class="text-3xl font-bold mt-3">
+                            Welcome back!
+                        </h1>
+                    </div>
+
+                    <div class="mb-8">
+                        <p class="text-sm font-semibold text-indigo-600">
+                            ACCOUNT ACCESS
+                        </p>
+
+                        <h2 class="text-3xl font-bold mt-2">
+                            Login to your account
+                        </h2>
+
+                        <p class="text-slate-500 mt-3">
+                            Enter your registered email and password.
+                        </p>
+                    </div>
+
+                    <!-- Error Message -->
+                    {% if error %}
+                        <div role="alert"
+                             class="mb-6 rounded-xl border border-red-200
+                                    bg-red-50 p-4 text-sm text-red-700">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Django Messages -->
+                    {% if messages %}
+                        <div class="space-y-2 mb-6">
+                            {% for message in messages %}
+                                <div role="status"
+                                     class="rounded-xl border border-blue-200
+                                            bg-blue-50 p-4 text-sm text-blue-700">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST" class="space-y-6">
+
+                        {% csrf_token %}
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email"
+                                   class="block text-sm font-semibold mb-2">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
+                                maxlength="254"
+                                autocomplete="email"
+                                placeholder="you@example.com"
+                                class="w-full rounded-xl border border-slate-300
+                                       px-4 py-3.5 outline-none transition
+                                       focus:border-indigo-500
+                                       focus:ring-4 focus:ring-indigo-100">
+                        </div>
+
+                        <!-- Password -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label for="password"
+                                       class="text-sm font-semibold">
+                                    Password
+                                </label>
+                            </div>
+
+                            <div class="relative">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    required
+                                    autocomplete="current-password"
+                                    placeholder="Enter your password"
+                                    class="w-full rounded-xl border border-slate-300
+                                           px-4 py-3.5 pr-20 outline-none
+                                           transition focus:border-indigo-500
+                                           focus:ring-4 focus:ring-indigo-100">
+
+                                <button
+                                    type="button"
+                                    id="togglePassword"
+                                    class="absolute inset-y-0 right-4
+                                           text-sm font-semibold
+                                           text-indigo-600 hover:text-indigo-800">
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Login Button -->
+                        <button
+                            type="submit"
+                            class="w-full rounded-xl bg-indigo-600
+                                   px-5 py-3.5 font-semibold text-white
+                                   shadow-md hover:bg-indigo-700
+                                   focus:outline-none focus:ring-4
+                                   focus:ring-indigo-200 transition">
+                            Login →
+                        </button>
+
+                    </form>
+
+                    <!-- Registration Link -->
+                    <p class="text-center text-sm text-slate-600 mt-8">
+                        Don't have an account?
+
+                        <a href="{% url 'register' %}"
+                           class="font-semibold text-indigo-600
+                                  hover:text-indigo-800">
+                            Register here
+                        </a>
+                    </p>
+
+                    <p class="text-center text-xs text-slate-400 mt-8">
+                        Secure access to your recruitment account.
+                    </p>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Password Visibility -->
+    <script>
+        const passwordInput = document.getElementById("password");
+        const toggleButton = document.getElementById("togglePassword");
+
+        toggleButton.addEventListener("click", function () {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                toggleButton.textContent = "Show";
+            }
+        });
+    </script>
+
+</body>
+</html>

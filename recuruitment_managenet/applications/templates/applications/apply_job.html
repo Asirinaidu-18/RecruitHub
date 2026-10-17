@@ -1,0 +1,254 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Apply for {{ job.title }} | Recruitment Portal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .application-card {
+            width: 100%;
+            max-width: 620px;
+            background: white;
+            border-radius: 18px;
+            padding: 38px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .job-details {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+
+        .detail {
+            margin-bottom: 15px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .detail:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .description {
+            color: #475569;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .confirmation {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 24px;
+            color: #1e40af;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .apply-button {
+            flex: 1;
+            background: #4f46e5;
+            color: white;
+        }
+
+        .apply-button:hover {
+            background: #4338ca;
+        }
+
+        .cancel-button {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .cancel-button:hover {
+            background: #cbd5e1;
+        }
+
+        .footer-note {
+            margin-top: 22px;
+            color: #94a3b8;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .application-card {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .apply-button,
+            .cancel-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="application-card">
+
+        <span class="badge">JOB APPLICATION</span>
+
+        <h1>Apply for {{ job.title }}</h1>
+
+        <p class="subtitle">
+            Review the job information below before submitting your application.
+        </p>
+
+        <section class="job-details">
+
+            <div class="detail">
+                <span class="label">Job Title</span>
+                <span class="value">{{ job.title }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Company</span>
+                <span class="value">{{ job.company }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Location</span>
+                <span class="value">{{ job.location }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Salary</span>
+                <span class="value">{{ job.salary }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Required Skills</span>
+                <span class="value">{{ job.skills }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Job Description</span>
+                <p class="description">{{ job.description }}</p>
+            </div>
+
+        </section>
+
+        <div class="confirmation">
+            <strong>Before you continue:</strong>
+            Please confirm that you want to apply for this position.
+            Your application will be submitted to the recruitment portal.
+        </div>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <div class="actions">
+
+                <a href="{% url 'job_detail' job.id %}"
+                   class="button cancel-button">
+                    Cancel
+                </a>
+
+                <button type="submit" class="button apply-button">
+                    Confirm Application &rarr;
+                </button>
+
+            </div>
+        </form>
+
+        <p class="footer-note">
+            Recruitment Management System
+        </p>
+
+    </main>
+
+</body>
+</html>
