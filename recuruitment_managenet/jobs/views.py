@@ -324,3 +324,4 @@ def delete_job(request, id):
     )
 def apply_job_redirect(request, id):
     return redirect('apply_job', job_id=id)
+

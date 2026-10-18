@@ -1,13 +1,12 @@
-from django.shortcuts import render,redirect
-from jobs.models import Job
-from applications.models import Application
-# Create your views here.
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import JobSeeker
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from django.contrib.auth import authenticate, login,logout
+from jobs.models import Job
+from applications.models import Application
+from .models import JobSeeker
 def home(request):
     return HttpResponse("Welcome to Recruitment Management System")
 
@@ -140,8 +139,7 @@ def dashboard(request):
     )
 def logout_view(request):
     logout(request)
-    return redirect('login')
-
+    return redirect('home')
 @login_required
 def profile(request):
 
@@ -175,3 +173,72 @@ def edit_profile(request):
         'users/edit_profile.html',
         {'job_seeker': job_seeker}
     )
+def admin_login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('admin_dashboard')
+
+        return render(
+            request,
+            'users/admin_login.html',
+            {'error': 'Invalid admin credentials'}
+        )
+
+    return render(request, 'users/admin_login.html')
+
+
+@login_required
+def admin_dashboard(request):
+    if not request.user.is_staff:
+        return redirect('admin_login')
+
+    total_job_seekers = JobSeeker.objects.count()
+    total_jobs = Job.objects.count()
+    total_applications = Application.objects.count()
+
+    context = {
+        'total_job_seekers': total_job_seekers,
+        'total_jobs': total_jobs,
+        'total_applications': total_applications,
+    }
+
+    return render(
+        request,
+        'users/admin_dashboard.html',
+        context
+    )
+def admin_login_view(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('admin_dashboard')
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('admin_dashboard')
+
+        return render(
+            request,
+            'users/admin_login.html',
+            {'error': 'Invalid admin username or password.'}
+        )
+
+    return render(request, 'users/admin_login.html')
